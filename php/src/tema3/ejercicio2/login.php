@@ -1,16 +1,28 @@
 <?php
     session_start();
-    $usuarioValido = $_SESSION['usuario'] = "miguel";
-    $contrasenyaValida = $_SESSION['contrasenya'] = "1234";
+    if(isset($_SESSION['historial'])) {
+        $historial = $_SESSION['historial'];
+        if(array_key_exists("Login", $historial)) {
+            $historial["Login"]++;
+        } else {
+            $historial["Login"] = 1;
+        }
+        $_SESSION['historial'] = $historial;
+    }
+    $usuarios = [
+        "miguel" => "1234",
+        "juan" => "abcd",
+        "ana" => "5678"
+    ];
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $usuario = htmlspecialchars($_POST['usuario']);
         $contrasenya = htmlspecialchars($_POST['contrasenya']);
-        $_SESSION["usuario"] = $usuario;
         $usuarioCorrecto = false;
         $contrasenyaCorrecta = false;
-        if($usuario === $usuarioValido) {
+        if(array_key_exists($usuario, $usuarios)) {
+            $_SESSION["usuario"] = $usuario;
             $usuarioCorrecto = true;
-            if($contrasenya === $contrasenyaValida) {
+            if($contrasenya === $usuarios[$usuario]) {
                 header('Location: welcome.php');
                 $contrasenyaCorrecta = true;
                 exit();
@@ -41,5 +53,6 @@
                         </label>
                         <button type="submit">Iniciar sesión</button>
                     </form>
+                    <a href="../ejercicio5/main.php">Ir al historial</a>
                 </body>
     </html>

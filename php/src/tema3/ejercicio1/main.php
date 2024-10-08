@@ -7,6 +7,16 @@ if (isset($_SESSION['carrito'])){
     $carrito = [];
 }
 
+if(isset($_SESSION['historial'])) {
+    $historial = $_SESSION['historial'];
+    if(array_key_exists("Ofegat", $historial)) {
+        $historial["Ofegat"]++;
+    } else {
+        $historial["Ofegat"] = 1;
+    }
+    $_SESSION['historial'] = $historial;
+}
+
 if (isset($_POST['producto'])){
     $producto = $_POST['producto'];
     if (isset($carrito[$producto])){
@@ -39,6 +49,8 @@ if (isset($_POST['producto'])){
         </select>
         <input type="submit" value="Afegir al carret">
     </form>
-    <a href="carret.php">Veure carret</a>
+    <a href="carret.php">Ver carrito</a>
+    <br>
+    <a href="../ejercicio5/main.php">Ir al historial</a>
 </body>
 </html>

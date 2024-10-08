@@ -1,41 +1,20 @@
 <?php
     session_start();
-    if (isset($_COOKIE['recordar'])) {
-        $_SESSION['usuario'] = $_COOKIE['recordar'];
-        header('Location: welcome.php');
-        exit();
-    }
-
-    $usuarioValido = "miguel";
-    $contrasenyaValida = "1234";
-
+    $usuarios = [
+        "miguel" => "1234",
+        "juan" => "abcd",
+        "ana" => "5678"
+    ];
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $usuario = htmlspecialchars($_POST['usuario']);
         $contrasenya = htmlspecialchars($_POST['contrasenya']);
-        
-        $recordarUsuario = false;
         $usuarioCorrecto = false;
         $contrasenyaCorrecta = false;
-
-        if($usuario === $usuarioValido) {
-            $_SESSION['usuario'] = $usuario;
+        if(array_key_exists($usuario, $usuarios)) {
+            $_SESSION["usuario"] = $usuario;
             $usuarioCorrecto = true;
-            if($contrasenya === $contrasenyaValida) {
-                if(isset($_POST['recordar'])) {
-                    $recordarUsuario = true;
-                    setcookie(
-                        'recordar',
-                        $usuarioValido,
-                        [
-                            'expires' => time() + 3600,
-                            'domain' => '',
-                            'secure' => true,
-                            'httponly' => true,
-                            'samesite' => 'Strict'
-                        ]
-                    );
-                }
-                header('Location: welcome.php');
+            if($contrasenya === $usuarios[$usuario]) {
+                header('Location: main.php');
                 $contrasenyaCorrecta = true;
                 exit();
             }
@@ -46,7 +25,6 @@
             echo "Contraseña incorrecta.";
         }
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -65,10 +43,6 @@
                             <input type="password" name="contrasenya" id="contrasenya">
                         </label>
                         <button type="submit">Iniciar sesión</button>
-                        <br>
-                        <label for="recordar">¿Recordar usuario?
-                            <input type="checkbox" name="recordar" id="recordar">
-                        </label>
                     </form>
                 </body>
     </html>
