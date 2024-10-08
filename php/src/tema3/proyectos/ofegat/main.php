@@ -4,7 +4,8 @@ require 'functions.php';
 $letra = "";
 $error = "";
 $palabraSecreta = "Euforia";
-$letrasAdivinadas = [];
+$letrasAdivinadas = array();
+$letrasFallidas = array();
 
 if (empty($letrasAdivinadas)) {
     for ($i = 0; $i < strlen($palabraSecreta); $i++) {
@@ -17,7 +18,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($letra)) {
         $error = "Por favor, inserta una letra.";
     } else {
-        imprimirArray($palabraSecreta, $letra, $letrasAdivinadas);
+        $letraCorrecta = imprimirArray($palabraSecreta, $letra, $letrasAdivinadas);
+        if (!$letraCorrecta) {
+            $error = "La letra $letra no está en la palabra.";
+        }
     }
 }
 
@@ -49,7 +53,6 @@ foreach ($letrasAdivinadas as $letraAdivinada) {
         <label for="letra">Introduce una letra: </label>
         <input type="text" id="letra" name="letra" value="<?= $letra ?>" maxlength="1">
         <span class="incorrect"><?= $error ?></span>
-        <span class="correct"><?= $historialDeLetras ?></span>
         <br><br><button type="submit">Probar letra</button>
         <br><br><a href="../login.php">Volver al menú principal</a>
     </form>
