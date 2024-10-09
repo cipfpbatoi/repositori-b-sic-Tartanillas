@@ -1,5 +1,8 @@
 <?php
     session_start();
+    if (isset($_COOKIE['recordar'])) {
+        $_SESSION['usuario'] = $_COOKIE['recordar'];
+    }
     $usuarios = [
         "miguel" => "1234",
     ];
@@ -12,7 +15,19 @@
             $_SESSION["usuario"] = $usuario;
             $usuarioCorrecto = true;
             if($contrasenya === $usuarios[$usuario]) {
-                header('Location: login.php');
+                if(isset($_POST['recordar'])) {
+                    setcookie(
+                        'recordar',
+                        $usuario,
+                        [
+                            'expires' => time() + 3600,
+                            'secure' => true,
+                            'httponly' => true,
+                            'samesite' => 'Strict'
+                        ]
+                    );
+                }
+                header('Location: main.php');
                 $contrasenyaCorrecta = true;
                 exit();
             }
@@ -43,6 +58,11 @@
                             <input type="password" name="contrasenya" id="contrasenya">
                         </label>
                         <button type="submit">Iniciar sesión</button>
+                        <br>
+                        <label for="recordar">¿Recordar usuario?
+                            <input type="checkbox" name="recordar" id="recordar">
+                        </label>
+                        <br>
                     </form>
                     <?php } else {
                         $usuario = $_SESSION['usuario']; ?>

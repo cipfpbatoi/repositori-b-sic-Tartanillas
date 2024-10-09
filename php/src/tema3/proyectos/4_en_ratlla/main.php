@@ -1,7 +1,7 @@
 <?php
     session_start();
     if(!isset($_SESSION['usuario'])) {
-        header('Location: ../login.php');
+        header('Location: ../main.php');
         exit();
     }
     include './functions.php';
@@ -60,7 +60,7 @@ td {
         <input type="hidden" name="actualPlayer" value="<?php echo $actualPlayer; ?>">
         <button type="submit">Hacer movimiento</button>
         <br><br>
-        <a href="../login.php">Volver al menú principal</a>
+        <a href="../main.php">Volver al menú principal</a>
     </form>
 
 </form>
