@@ -41,8 +41,18 @@ $_SESSION['juego']['letrasIncorrectas'] = $letrasIncorrectas;
 $_SESSION['juego']['palabraSecreta'] = $palabraSecreta;
 $_SESSION['juego']['intentos'] = $intentos;
 $_SESSION['juego']['intentoActual'] = $intentoActual;
-if ($intentoActual <= $intentos) {
 
+$haGanado = false;
+$guiones = 0;
+foreach ($letrasAdivinadas as $let) {
+    if($let === "_") {
+        $guiones++;
+    }
+}
+if($guiones == 0) {
+    $haGanado = true;
+}
+if ($intentoActual <= $intentos && !$haGanado) {
     foreach ($letrasAdivinadas as $letraAdivinada) {
         echo $letraAdivinada . " ";
     }
@@ -70,7 +80,12 @@ if ($intentoActual <= $intentos) {
 
 <body>
     <?php
-    if ($intentoActual <= $intentos) { ?>
+    if($haGanado){ ?>
+        <span class="correct">¡Has ganado! La palabra correcta era <?= $palabraSecreta ?> </span>
+        <br>
+        <!-- Lógica para reiniciar el juego. -->
+        <a href="../main.php">Volver al menú principal</a>
+    <?php } else if ($intentoActual <= $intentos) { ?>
         <form action="" method="post" enctype="multipart/form-data">
             <label for="letra">Introduce una letra </label>
             <input type="text" id="letra" name="letra" value="<?= $letra ?>" maxlength="1">
