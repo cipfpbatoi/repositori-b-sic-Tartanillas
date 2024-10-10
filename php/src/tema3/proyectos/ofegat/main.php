@@ -1,10 +1,10 @@
 <?php
 session_start();
-//unset($_SESSION['juego']);
 if (!isset($_SESSION['usuario'])) {
     header('Location: ../main.php');
     exit();
 }
+require 'functions.php';
 if (isset($_SESSION['juego'])) {
     $palabraSecreta = $_SESSION['juego']['palabraSecreta'];
     $letrasAdivinadas = $_SESSION['juego']['letrasAdivinadas'];
@@ -21,8 +21,6 @@ if (isset($_SESSION['juego'])) {
     $intentos = 6;
     $intentoActual = 1;
 }
-require 'functions.php';
-
 $letra = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $letra = htmlspecialchars($_POST['letra']);
@@ -36,33 +34,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-$_SESSION['juego']['letrasAdivinadas'] = $letrasAdivinadas;
-$_SESSION['juego']['letrasIncorrectas'] = $letrasIncorrectas;
-$_SESSION['juego']['palabraSecreta'] = $palabraSecreta;
-$_SESSION['juego']['intentos'] = $intentos;
-$_SESSION['juego']['intentoActual'] = $intentoActual;
-
-$haGanado = false;
-$guiones = 0;
-foreach ($letrasAdivinadas as $let) {
-    if($let === "_") {
-        $guiones++;
-    }
-}
-if($guiones == 0) {
-    $haGanado = true;
-}
+actualizarSesion($palabraSecreta, $letrasAdivinadas, $letrasIncorrectas, $intentos, $intentoActual);
+$haGanado = haGanado($letrasAdivinadas);
 if ($intentoActual <= $intentos && !$haGanado) {
     foreach ($letrasAdivinadas as $letraAdivinada) {
         echo $letraAdivinada . " ";
     }
-    echo '<pre style="display: inline;"><em>          Intento actual' . $intentoActual . '/' . $intentos . '</em></pre>';
+    echo '<pre style="display: inline;"><em>          Intento actual ' . $intentoActual . '/' . $intentos . '</em></pre>';
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,25 +54,21 @@ if ($intentoActual <= $intentos && !$haGanado) {
     .correct {
         color: green;
     }
-
     .incorrect {
         color: red;
     }
 </style>
-
 <body>
     <?php
-    if($haGanado){ ?>
+    if ($haGanado) { ?>
         <span class="correct">¡Has ganado! La palabra correcta era <?= $palabraSecreta ?> </span>
         <br>
-        <!-- Lógica para reiniciar el juego. -->
-        <a href="../main.php">Volver al menú principal</a>
+        <a href="./reiniciar.php">Reiniciar juego</a>
     <?php } else if ($intentoActual <= $intentos) { ?>
         <form action="" method="post" enctype="multipart/form-data">
             <label for="letra">Introduce una letra </label>
             <input type="text" id="letra" name="letra" value="<?= $letra ?>" maxlength="1">
             <button type="submit">Probar letra</button>
-            <!-- Lógica para reiniciar el juego. -->
             <h3>Letras correctas</h3>
             <span class="correct">
                 <?php foreach ($letrasAdivinadas as $letraAdivinada) {
@@ -106,12 +84,12 @@ if ($intentoActual <= $intentos && !$haGanado) {
                 } ?>
             </span>
         </form>
+        <a href="./reiniciar.php">Reiniciar juego</a><br>
+        <a href="../logout.php">Cerrar sesión</a><br>
         <a href="../main.php">Volver al menú principal</a>
     <?php } else { ?>
         <h3 class="incorrect">Has perdido, has superado el máximo de intentos.</h3>
-        <!-- Lógica para reiniciar el juego. -->
+        <a href="./reiniciar.php">Reiniciar juego</a>
     <?php } ?>
-
 </body>
-
 </html>
