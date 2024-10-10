@@ -60,6 +60,8 @@ td {
         <input type="hidden" name="actualPlayer" value="<?php echo $actualPlayer; ?>">
         <button type="submit">Hacer movimiento</button>
         <br><br>
+        <a href="./reiniciar.php">Reiniciar juego</a><br>
+        <a href="../logout.php">Cerrar sesión</a><br>
         <a href="../main.php">Volver al menú principal</a>
     </form>
 
