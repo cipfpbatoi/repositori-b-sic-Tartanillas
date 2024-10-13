@@ -5,12 +5,12 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 require 'functions.php';
-if (isset($_SESSION['juego'])) {
-    $palabraSecreta = $_SESSION['juego']['palabraSecreta'];
-    $letrasAdivinadas = $_SESSION['juego']['letrasAdivinadas'];
-    $letrasIncorrectas = $_SESSION['juego']['letrasIncorrectas'];
-    $intentos = $_SESSION['juego']['intentos'];
-    $intentoActual = $_SESSION['juego']['intentoActual'];
+if (isset($_SESSION['ofegat'])) {
+    $palabraSecreta = $_SESSION['ofegat']['palabraSecreta'];
+    $letrasAdivinadas = $_SESSION['ofegat']['letrasAdivinadas'];
+    $letrasIncorrectas = $_SESSION['ofegat']['letrasIncorrectas'];
+    $intentos = $_SESSION['ofegat']['intentos'];
+    $intentoActual = $_SESSION['ofegat']['intentoActual'];
 } else {
     $palabraSecreta = "Euforia";
     $letrasAdivinadas = [];
@@ -49,15 +49,8 @@ if ($intentoActual <= $intentos && !$haGanado) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ahorcado</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<style>
-    .correct {
-        color: green;
-    }
-    .incorrect {
-        color: red;
-    }
-</style>
 <body>
     <?php
     if ($haGanado) { ?>

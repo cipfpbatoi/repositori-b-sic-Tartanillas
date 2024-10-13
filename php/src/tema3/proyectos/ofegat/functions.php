@@ -11,11 +11,11 @@ function comprobarLetra($palabraSecreta, $letraUsuario, &$arrayAdivinadas) {
 }
 
 function actualizarSesion($palabraSecreta, $letrasAdivinadas, $letrasIncorrectas, $intentos, $intentoActual) {
-    $_SESSION['juego']['letrasAdivinadas'] = $letrasAdivinadas;
-    $_SESSION['juego']['letrasIncorrectas'] = $letrasIncorrectas;
-    $_SESSION['juego']['palabraSecreta'] = $palabraSecreta;
-    $_SESSION['juego']['intentos'] = $intentos;
-    $_SESSION['juego']['intentoActual'] = $intentoActual;
+    $_SESSION['ofegat']['letrasAdivinadas'] = $letrasAdivinadas;
+    $_SESSION['ofegat']['letrasIncorrectas'] = $letrasIncorrectas;
+    $_SESSION['ofegat']['palabraSecreta'] = $palabraSecreta;
+    $_SESSION['ofegat']['intentos'] = $intentos;
+    $_SESSION['ofegat']['intentoActual'] = $intentoActual;
 }
 
 function haGanado($letrasAdivinadas) {

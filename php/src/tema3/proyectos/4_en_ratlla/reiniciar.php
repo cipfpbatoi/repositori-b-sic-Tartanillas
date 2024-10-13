@@ -1,6 +1,6 @@
 <?php
     session_start();
-    unset($_SESSION['juego']);
+    unset($_SESSION['4_en_ratlla']);
     header('Location: ./main.php');
     exit();
 ?>
